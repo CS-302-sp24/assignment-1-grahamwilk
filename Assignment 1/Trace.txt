@@ -1,0 +1,260 @@
+Key - I used + to signify acquisition of a chopstick, - to signify release of a chopstick, and ~ to signify a request to grab a chopstick.
+***
+Simple Deadlock example
+
+> java DiningPhilosophers 2 0 1 1 0
+Philosopher 1 starts thinking for 0ms
+Philosopher 0 starts thinking for 0ms
+Philosopher 0 has thought for 0ms
+Philosopher 1 has thought for 0ms
+Philosopher 1 wants right chopstick (id ~0)
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 1 has right chopstick (id +0)
+Philosopher 0 has right chopstick (id +1)
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 0 wants left chopstick (id ~0)
+
+Since both philosphers are requesting the a chopstick that the other philospher has, they have reached a deadlock.
+They will both keep requesting the other chopstick without being able to release their current chopstick.
+***
+***
+Left and Right handed Philosphers avoiding deadlock
+> java DiningPhilosophers 5 5 1 1 1
+Philosopher 3 has thought for 0ms    
+Philosopher 4 has thought for 0ms    
+Philosopher 2 has thought for 0ms
+Philosopher 2 wants right chopstick (id ~3)
+Philosopher 1 has thought for 0ms
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 0 has thought for 0ms
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 3 wants left chopstick (id ~3)
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 2 has right chopstick (id +3)
+Philosopher 1 has left chopstick (id +1)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 2 wants left chopstick (id ~2)
+Philosopher 2 has left chopstick (id +2)
+Philosopher 1 wants right chopstick (id ~2)
+Philosopher 4 has left chopstick (id +4)
+Philosopher 4 is eating for 0 ms with chopsticks (id 0 4)
+Philosopher 2 is eating for 0 ms with chopsticks (id 3 2)
+Philosopher 4 has eaten for 0 ms and release chopsticks (id -0 -4)
+Philosopher 4 starts thinking for 0ms
+Philosopher 4 has thought for 0ms
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 4 has left chopstick (id +4)
+Philosopher 2 has eaten for 0 ms and release chopsticks (id -3 -2)
+
+Even though I have set the eating and thinking time to their lowest possible values, the philosphers are still able to avoid deadlock
+due to them each going for a different chopstick first. For example, once P2 takes C3, they don't have to worry about C2 getting taken first.
+This is because P1 will be going for their left chopstick first (C1).
+***
+***
+Chance Deadlock
+
+In order to speed up the chance for a deadlock, I reduced the eating & thinking time to only 2 ms.
+Despite that, Philosopher 0 was still able to think 180 times before reaching a deadlock.
+
+java DiningPhilosophers 5 0 2 2 0
+Philosopher 2 wants right chopstick (id ~3)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 1 has right chopstick (id +2)
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 1 has left chopstick (id +1)
+Philosopher 1 is eating for 1 ms with chopsticks (id 2 1)
+Philosopher 3 has left chopstick (id +3)
+Philosopher 3 is eating for 1 ms with chopsticks (id 4 3)
+Philosopher 0 has thought for 1ms
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 3 has eaten for 1 ms and release chopsticks (id -4 -3)
+Philosopher 3 starts thinking for 0ms
+Philosopher 3 has thought for 0ms
+Philosopher 3 wants right chopstick (id ~4)
+Philosopher 1 has eaten for 1 ms and release chopsticks (id -2 -1)
+Philosopher 1 starts thinking for 0ms
+Philosopher 1 has thought for 0ms
+Philosopher 1 wants right chopstick (id ~2)
+Philosopher 1 has right chopstick (id +2)
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 2 has right chopstick (id +3)
+Philosopher 2 wants left chopstick (id ~2)
+Philosopher 4 has left chopstick (id +4)
+Philosopher 4 is eating for 0 ms with chopsticks (id 0 4)
+Philosopher 4 has eaten for 0 ms and release chopsticks (id -0 -4)
+Philosopher 4 starts thinking for 0ms
+Philosopher 4 has thought for 0ms
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 0 has right chopstick (id +1)
+Philosopher 0 wants left chopstick (id ~0)
+Philosopher 3 has right chopstick (id +4)
+Philosopher 3 wants left chopstick (id ~3)
+
+All 5 philosophers have their right chopstick, but they are all requesting for the left one.
+***
+***
+Five Philosphers eating forever
+
+For this I used large thinking and eating times. The chance for deadlock is so low, that even after running it for a couple minutes
+it was still going.
+
+Here is a small snippet of what it looked like:
+> java DiningPhilosophers 5 0 1000 1000 0
+...
+Philosopher 2 is eating for 641 ms with chopsticks (id 3 2)
+Philosopher 3 has thought for 264ms
+Philosopher 3 wants right chopstick (id ~4)
+Philosopher 3 has right chopstick (id +4)
+Philosopher 3 wants left chopstick (id ~3)
+Philosopher 4 has thought for 854ms
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 0 has thought for 900ms
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 0 has right chopstick (id +1)
+Philosopher 0 wants left chopstick (id ~0)
+Philosopher 1 has thought for 648ms
+Philosopher 1 wants right chopstick (id ~2)
+Philosopher 2 has eaten for 641 ms and release chopsticks (id -3 -2)
+Philosopher 2 has thought 25 times
+Philosopher 2 starts thinking for 625ms
+Philosopher 1 has right chopstick (id +2)
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 3 has left chopstick (id +3)
+Philosopher 3 is eating for 421 ms with chopsticks (id 4 3)
+Philosopher 3 has eaten for 421 ms and release chopsticks (id -4 -3)
+Philosopher 3 starts thinking for 414ms
+Philosopher 4 has left chopstick (id +4)
+Philosopher 4 is eating for 861 ms with chopsticks (id 0 4)
+Philosopher 2 has thought for 625ms
+Philosopher 2 wants right chopstick (id ~3)
+Philosopher 2 has right chopstick (id +3)
+Philosopher 2 wants left chopstick (id ~2)
+Philosopher 3 has thought for 414ms
+Philosopher 3 wants right chopstick (id ~4)
+Philosopher 4 has eaten for 861 ms and release chopsticks (id -0 -4)
+Philosopher 4 starts thinking for 768ms
+Philosopher 3 has right chopstick (id +4)
+Philosopher 3 wants left chopstick (id ~3)
+Philosopher 0 has left chopstick (id +0)
+Philosopher 0 is eating for 660 ms with chopsticks (id 1 0)
+Philosopher 0 has eaten for 660 ms and release chopsticks (id -1 -0)
+Philosopher 0 starts thinking for 141ms
+Philosopher 1 has left chopstick (id +1)
+Philosopher 1 is eating for 521 ms with chopsticks (id 2 1)
+Philosopher 4 has thought for 768ms
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 0 has thought for 141ms
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 1 has eaten for 521 ms and release chopsticks (id -2 -1)
+Philosopher 1 has thought 25 times
+Philosopher 0 has right chopstick (id +1)
+Philosopher 0 wants left chopstick (id ~0)
+Philosopher 2 has left chopstick (id +2)
+Philosopher 2 is eating for 231 ms with chopsticks (id 3 2)
+Philosopher 1 starts thinking for 203ms
+***
+***
+Long thinking time - short eating time
+
+Here is an example I created with a long thinking time and short eating time:
+
+>java DiningPhilosophers 5 0 1000 10 0
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 4 has left chopstick (id +4)
+Philosopher 4 is eating for 2 ms with chopsticks (id 0 4)
+Philosopher 4 has eaten for 2 ms and release chopsticks (id -0 -4)
+Philosopher 4 starts thinking for 270ms
+Philosopher 3 has thought for 727ms
+Philosopher 3 wants right chopstick (id ~4)
+Philosopher 3 has right chopstick (id +4)
+Philosopher 3 wants left chopstick (id ~3)
+Philosopher 3 has left chopstick (id +3)
+Philosopher 3 is eating for 1 ms with chopsticks (id 4 3)
+Philosopher 3 has eaten for 1 ms and release chopsticks (id -4 -3)
+Philosopher 3 starts thinking for 391ms
+Philosopher 0 has thought for 974ms
+Philosopher 0 wants right chopstick (id ~1)
+Philosopher 0 has right chopstick (id +1)
+Philosopher 0 wants left chopstick (id ~0)
+Philosopher 0 has left chopstick (id +0)
+Philosopher 0 is eating for 2 ms with chopsticks (id 1 0)
+Philosopher 0 has eaten for 2 ms and release chopsticks (id -1 -0)
+Philosopher 0 starts thinking for 396ms
+Philosopher 1 has thought for 344ms
+Philosopher 1 wants right chopstick (id ~2)
+Philosopher 1 has right chopstick (id +2)
+Philosopher 1 wants left chopstick (id ~1)
+Philosopher 1 has left chopstick (id +1)
+Philosopher 1 is eating for 6 ms with chopsticks (id 2 1)
+Philosopher 1 has eaten for 6 ms and release chopsticks (id -2 -1)
+Philosopher 1 starts thinking for 304ms
+Philosopher 4 has thought for 270ms
+Philosopher 4 wants right chopstick (id ~0)
+Philosopher 4 has right chopstick (id +0)
+Philosopher 4 wants left chopstick (id ~4)
+Philosopher 4 has left chopstick (id +4)
+Philosopher 4 is eating for 4 ms with chopsticks (id 0 4)
+Philosopher 4 has eaten for 4 ms and release chopsticks (id -0 -4)
+Philosopher 4 starts thinking for 389ms
+
+This scenario is also very good at avoiding a deadlock, with the long thinking time.
+***
+***
+Too Many Philosophers
+
+I tried using the output designed to produce a deadlock, but instead with 1000 philosophers.
+
+>java DiningPhilosophers 1000 0 1 1 0 
+Philosopher 97 has left chopstick (id +97)
+Philosopher 158 starts thinking for 0ms
+Philosopher 158 has thought for 0ms
+Philosopher 158 wants right chopstick (id ~159)
+Philosopher 157 has right chopstick (id +158)
+Philosopher 157 wants left chopstick (id ~157)
+Philosopher 159 has left chopstick (id +159)
+Philosopher 159 is eating for 0 ms with chopsticks (id 160 159)
+Philosopher 159 has eaten for 0 ms and release chopsticks (id -160 -159)
+Philosopher 159 starts thinking for 0ms
+Philosopher 159 has thought for 0ms
+Philosopher 159 wants right chopstick (id ~160)
+Philosopher 701 has left chopstick (id +701)
+Philosopher 701 is eating for 0 ms with chopsticks (id 702 701)
+Philosopher 701 has eaten for 0 ms and release chopsticks (id -702 -701)
+Philosopher 699 has right chopstick (id +700)
+Philosopher 699 wants left chopstick (id ~699)
+Philosopher 624 has eaten for 0 ms and release chopsticks (id -625 -624)
+Philosopher 624 starts thinking for 0ms
+Philosopher 827 has left chopstick (id +827)
+Philosopher 827 is eating for 0 ms with chopsticks (id 828 827)
+Philosopher 827 has eaten for 0 ms and release chopsticks (id -828 -827)
+Philosopher 827 starts thinking for 0ms
+Philosopher 827 has thought for 0ms
+Philosopher 827 wants right chopstick (id ~828)
+Philosopher 825 has right chopstick (id +826)
+Philosopher 825 wants left chopstick (id ~825)
+Philosopher 737 has left chopstick (id +737)
+Philosopher 737 is eating for 0 ms with chopsticks (id 738 737)
+Philosopher 735 has right chopstick (id +736)
+Philosopher 735 wants left chopstick (id ~735)
+Philosopher 762 has right chopstick (id +763)
+Philosopher 762 wants left chopstick (id ~762)
+Philosopher 764 has left chopstick (id +764)
+Philosopher 764 is eating for 0 ms with chopsticks (id 765 764)
+Philosopher 874 has thought 10 times
+Philosopher 874 starts thinking for 0ms
+
+While in reality, if everyone tried to grab the right fork at the same time, even with 1000 people, it would still produce a deadlock.
+However, since I have 1000 philosophers, The time it takes for the computer to create 1000 philosophers is already enough time for P0 to get ahold
+of both their left and right chopstick.
